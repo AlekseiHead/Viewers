@@ -32,6 +32,7 @@ import {
   CustomizationService,
   StateSyncService,
   PanelService,
+  MedicalExaminationService,
 } from './services';
 
 import { DisplaySetMessage, DisplaySetMessageList } from './services/DisplaySetService';
@@ -81,6 +82,7 @@ const OHIF = {
   pubSubServiceInterface,
   PubSubService,
   PanelService,
+  MedicalExaminationService,
 };
 
 export {
@@ -124,6 +126,7 @@ export {
   Enums,
   Types,
   PanelService,
+  MedicalExaminationService,
 };
 
 export { OHIF };
