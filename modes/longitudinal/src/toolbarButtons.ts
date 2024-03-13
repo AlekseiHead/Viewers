@@ -289,6 +289,23 @@ const toolbarButtons: Button[] = [
       ],
     },
   },
+  // Examination...
+  {
+    id: 'Examination',
+    type: 'ohif.action',
+    props: {
+      icon: 'tool-examination',
+      label: 'Examination',
+      type: 'action',
+      commands: [
+        {
+          commandName: 'showResultModal',
+          commandOptions: {},
+          context: 'CORNERSTONE',
+        },
+      ],
+    },
+  },
   {
     id: 'Layout',
     type: 'ohif.layoutSelector',
