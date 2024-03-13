@@ -38,6 +38,131 @@ provided by the <a href="https://ohif.org/">Open Health Imaging Foundation (OHIF
 <!-- [![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors) -->
 <!-- prettier-ignore-end -->
 
+# Версия OHIF Viewer для [DPHT] с протоколом обследования.
+«Цифровые технологии в общественном здоровье» Университет [ИТМО] г. Санкт-Петербург.
+
+**Реализация протокола для документирования и отправки результатов обследования при проведении скрининга рака молочной̆ железы, скрининга рака легкого, скрининга диабетической̆ ретинопатии, а также ранней̆ диагностики сердечно-сосудистых заболеваний.**
+
+## Features
+- Добавлен протокол результатов обследования
+- Реализована отправка введенных данных в хранилище bucket s3
+- Загрузка изображений из собственного pacs хранилища
+- Сохранение промежуточного протокола (введенных данных)
+- Отправляемый файл получает StudyInstanceUID в качестве имени, что позволяет его идентифицировать для дальнейшей работы (в разработке)
+
+Данная модифицированная версия OHIF Medical Imaging Viewer работает в совокупности с другими решениями, разработанными лабораторией [DPHT]. Для использования нашего продукта и ваших предложений перейдите на [сайт] лаборатории и напишите нам.
+
+## Installation
+> *Данная версия веб-разметчика полностью поддерживает*
+> *весь основной функционал OHIF, а также дополняет его.*
+>
+> *Установка и среда разработки описана ниже в оригинальной*
+> *инструкции OHIF.*
+>
+> *Вы можете развернуть у себя на локальной машине*
+> *изначальный репозиторий OHIF Viewer*
+> *и подтянуть изменения из моей ветки [gitHub],*
+> *а также установить дополнительные зависимости.*
+
+**Нижеописанные библиотеки необходимы для работы протокола "Examination", без них все остальные функции OHIF также будут работать. Кроме протокола обследования!**
+1. Установите [formik](https://formik.org/) командой `yarn add...`
+2. Установите [formik-persist](https://www.npmjs.com/package/formik-persist) командой `yarn add...`
+3. Установите [flowbite-react](https://www.flowbite-react.com/) командой `yarn add...`
+4. Установите [aws-sdk/client-s3](https://www.npmjs.com/package/@aws-sdk/client-s3) командой `yarn add...`
+Используйте ключ -W в случае ошибки.
+Для отслеживания и получения состояния формы (input, checkbox, select) в протоколе Examination я использую **formik**, как небольшую и удобную библиотеку.
+В свою очередь **formik-persist** используется для хранения состояния полей формы в localStorage.
+Библиотека **flowbite-react** служит для оформления полей в протоколе.
+И, наконец, **client-s3 SDK** необходим для отправки заполненного протокола в s3 bucket. Клиент использует Amazon Web Services.
+
+### Docker
+Мою версию OHIF Viewer с протоклом "Examination" легко установить и развернуть в контейнере Docker.
+Порт указан как PORT=80.
+```sh
+docker pull alexheaddev/ohif-cloud:version2
+```
+Пожалуйста, проверяйте наличие последних версий [здесь](https://hub.docker.com/r/alexheaddev/ohif-cloud/tags)
+
+## Functionality
+В Toolbar основного меню добавлена кнопка **"Examination"**, при нажатии на которую в модальном окне открывается протокол обследования. Данный протокол заполняется специалистом, который проводит обследование. Можно добавить неограниченное количество очагов с помощью кнопки **"Добавить очаг"**, либо удалить любой из заполненных - **"Удалить очаг"**. В основном теле протокола необходимо выбрать показатели из выпадающего списка. Также, есть возможность отметить **"Необходимость экспертного анализа"**, в этом случае протокол будет перенаправлен установленному эксперту. При нажатии кнопки "Отправить" заполненный протокол отправляется в **s3** хранилище [yandex object storage]. У модального окна протокола предусмотрено сохранение состояния в **localStorage**, которое служит как для многоразового открытия/закрытия окна для возврата к исследуемому изображению, так и для чрезвычайных случаев (зависание компьютера, закрытие программы и т.д.). Важно отметить, что при успешной отправке - данные из localStorage **удаляются!**
+> *B процессе реализации: В момент отправки заполненных данных в формате json создается файл с расширением «.json», который в качестве имени принимает StudyInstanceUID последнего просмотренного изображения.*
+
+## Main file storage locations
+| Имя | Описание |
+| ----------------------------- | ----------------------------- |
+| [ResultsFormComponent][protocol] | Компонент протокола и основные функции |
+| [IExaminationResults][interface] | Экспорт интерфейса |
+| [MedicalExaminationService][service] | Сервис регистрации в CommandsManager и ExtensionManager |
+| [default.js][config] | Конфиг путей dicom файлов |
+
+## Demonstration
+| Изображение | Описание |
+| :-: | :---  |
+| <img src="platform/docs/docs/assets/exam_demonstration/examination_button.png" alt="Examination button" width="350"/> | Кнопка вызова протокола |
+| <img src="platform/docs/docs/assets/exam_demonstration/examination_nodules_block.png" alt="Examination protocol nodules" width="350"/> | Блок протокола с очагами |
+| <img src="platform/docs/docs/assets/exam_demonstration/examination_body_block.png" alt="Examination protocol body" width="350"/> | Основной блок протокола |
+| <img src="platform/docs/docs/assets/exam_demonstration/examination_control.png" alt="Examination control buttons" width="350"/> | Кнопки управления протоколом |
+
+> *Документация OHIF Viewer находится ниже в этом файле.*
+
+**This is the English version of the description, if you read the Russian version - skip this.**
+
+# Version of OHIF Viewer for [DPHT] with examination protocol.
+ “Digital technologies in public health” University [ITMO] St. Petersburg.
+
+**Implementation of a protocol for documenting and sending examination results during breast cancer screening, lung cancer screening, diabetic retinopathy screening, and early diagnosis of cardiovascular diseases.**
+
+## Features
+- Added protocol of examination results
+- Implemented sending of entered data to bucket s3 storage
+- Loading images from your own pacs storage
+- Saving the intermediate protocol (entered data)
+- The sent file receives StudyInstanceUID as a name, which allows it to be identified for further work (in development)
+This modified version of OHIF Medical Imaging Viewer works in conjunction with other solutions developed by the [DPHT] laboratory. To use our product and your suggestions, go to the laboratory [website] and write to us.
+
+## Installation
+> *This version of the web markup fully supports*
+> *all the main functionality of OHIF, and also complements it.*
+>
+> *Installation and development environment are described below in the original*
+> *OHIF instructions.*
+>
+> *You can deploy it on your local machine*
+> *initial OHIF Viewer repository*
+> *and pull changes from my [gitHub] branch,*
+> *and also install additional dependencies.*
+
+**The libraries described below are necessary for the full operation of the "Examination" protocol; without them, all other OHIF functions will also work. Except for the examination report!**
+1. Install [formik](https://formik.org/) with the command `yarn add...`
+2. Install [formik-persist](https://www.npmjs.com/package/formik-persist) with the command `yarn add...`
+3. Install [aws-sdk/client-s3](https://www.npmjs.com/package/@aws-sdk/client-s3) with the command `yarn add...`
+Use the -W switch in case of error.
+
+### Libraries description
+To track and get the form state (input, checkbox, select) in the Examination protocol, I use **formik** as a small and convenient library.
+In turn, **formik-persist** is used to store the state of the form fields in localStorage.
+And finally, **client-s3 SDK** is required to send the completed protocol to the s3 bucket. The client is using Amazon Web Services.
+### Docker
+My version of OHIF Viewer with the "Examination" protocol is easy to install and deploy in a Docker container.
+The port is specified as PORT=80.
+```sh
+docker pull alexheaddev/ohif-cloud:version2
+```
+Please check for the latest versions [here](https://hub.docker.com/r/alexheaddev/ohif-cloud/tags)
+
+## Functionality
+The **"Examination"** button has been added to the Toolbar of the main menu; when clicked, the examination protocol opens in a modal window. This protocol is filled out by the specialist who conducts the examination. You can add an unlimited number of fires using the **"Add fire"** button, or delete any of the filled ones - **"Delete fire"**. In the main body of the protocol, you must select indicators from the drop-down list. It is also possible to mark **"Need for expert analysis"**, in which case the protocol will be forwarded to the designated expert. When you click the "Submit" button, the completed protocol is sent to **s3** storage [yandex object storage]. The protocol modal window has state saving in **localStorage**, which serves both for repeated opening/closing of the window to return to the image under study, and for emergency cases (computer freezes, program closing, etc.). It is important to note that upon successful sending, data from localStorage **is deleted!**
+> *During implementation: At the moment of sending the completed data in json format, a file with the extension “.json” is created, which takes the StudyInstanceUID of the last viewed image as its name.*
+
+## Main file storage locations
+| Name | Description |
+| ----------------------------- | ----------------------------- |
+| [ResultsFormComponent][protocol] | Protocol Component and Main Functions |
+| [IExaminationResults][interface] | Export interface |
+| [MedicalExaminationService][service] | Registration service in CommandsManager and ExtensionManager |
+| [default.js][config] | Dicom file path config |
+
+> *OHIF Viewer documentation is located below in this file.*
 
 |     |  | |
 | :-: | :---  | :--- |
