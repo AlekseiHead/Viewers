@@ -21,6 +21,7 @@ import toggleImageSliceSync from './utils/imageSliceSync/toggleImageSliceSync';
 import { getFirstAnnotationSelected } from './utils/measurementServiceMappings/utils/selection';
 import getActiveViewportEnabledElement from './utils/getActiveViewportEnabledElement';
 import { CornerstoneServices } from './types';
+import ResultsForm from './utils/ResultsForm';
 
 function commandsModule({
   servicesManager,
@@ -35,6 +36,7 @@ function commandsModule({
     cornerstoneViewportService,
     uiNotificationService,
     measurementService,
+    medicalExaminationService,
   } = servicesManager.services as CornerstoneServices;
 
   const { measurementServiceSource } = this;
@@ -386,6 +388,22 @@ function commandsModule({
         });
       }
     },
+    showResultModal: () => {
+      const { activeResultsIndex } = viewportGridService.getState();
+      const { uiModalService } = servicesManager.services;
+
+      if (uiModalService) {
+        uiModalService.show({
+          content: ResultsForm,
+          title: 'Результаты исследований',
+          contentProps: {
+            activeResultsIndex,
+            onClose: uiModalService.hide,
+            medicalExaminationService,
+          },
+        });
+      }
+    },
     rotateViewport: ({ rotation }) => {
       const enabledElement = _getActiveViewportEnabledElement();
       if (!enabledElement) {
@@ -713,6 +731,11 @@ function commandsModule({
     },
     showDownloadViewportModal: {
       commandFn: actions.showDownloadViewportModal,
+    },
+    showResultModal: {
+      commandFn: actions.showResultModal,
+      storeContexts: [],
+      options: {},
     },
     toggleCine: {
       commandFn: actions.toggleCine,

@@ -117,6 +117,7 @@ export {
   WindowLevelMenuItem,
   ImageScrollbar,
   ViewportOverlay,
+  ResultsFormComponent,
 } from './components';
 
 export { useSessionStorage } from './hooks';
