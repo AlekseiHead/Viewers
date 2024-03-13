@@ -399,6 +399,17 @@ MIT © [OHIF](https://github.com/OHIF)
 <!--
   Links
   -->
+[итмо]: <https://itmo.ru/>
+[itmo]: <https://itmo.ru/>
+[dpht]: <https://dpht.itmo.ru/>
+[сайт]: <https://dpht.itmo.ru/>
+[website]: <https://dpht.itmo.ru/>
+[gitHub]: <https://github.com/AlekseiHead/Viewers/tree/feat-exam-modal>
+[yandex object storage]: <https://cloud.yandex.ru/services/storage>
+[protocol]: <https://github.com/AlekseiHead/Viewers/tree/feat-exam-modal/platform/ui/src/components/ResultsFormComponent>
+[interface]: <https://github.com/AlekseiHead/Viewers/blob/feat-exam-modal/platform/core/src/services/MedicalExaminationService/examinationResults.ts>
+[service]: <https://github.com/AlekseiHead/Viewers/blob/feat-exam-modal/platform/core/src/services/MedicalExaminationService/MedicalExaminationService.ts>
+[config]: <https://github.com/AlekseiHead/Viewers/blob/feat-exam-modal/platform/app/public/config/default.js>
 
 <!-- prettier-ignore-start -->
 <!-- Badges -->
