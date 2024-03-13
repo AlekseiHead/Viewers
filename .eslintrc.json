@@ -18,7 +18,8 @@
   },
   "rules": {
     // Enforce consistent brace style for all control statements for readability
-    "curly": "error"
+    "curly": "error",
+    "@typescript-eslint/no-explicit-any": ["off"]
   },
   "globals": {
     "cy": true,
