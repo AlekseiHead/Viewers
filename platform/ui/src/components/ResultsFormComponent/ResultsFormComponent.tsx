@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Button } from '../';
+import Button, { ButtonEnums } from '../Button';
 import { IExaminationResults } from 'platform/core/src/services/MedicalExaminationService/examinationResults';
 import { useModal } from '../../contextProviders';
 import { DicomMetadataStore } from '@ohif/core';
 
-import { Field, FieldArray, Form, Formik } from 'formik';
+import { Formik, Field, FieldArray, Form } from 'formik';
 import { Persist } from 'formik-persist';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { Accordion } from 'flowbite-react';
+//import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+//import S3Client = require('@aws-sdk/client-s3');
 
 //Подключение сервиса по правилам OHIF//Connecting the service according to OHIF rules
 //import { MedicalExaminationService } from '@ohif/core';
@@ -18,14 +19,14 @@ import { Accordion } from 'flowbite-react';
 //const currentDate = new Date();
 
 //Credentials для s3//Credentials for s3
-const s3Client = new S3Client({
+/*const s3Client = new S3Client({
   region: 'ru-central1-a',
   endpoint: 'https://storage.yandexcloud.net',
   credentials: {
     accessKeyId: process.env.REACT_APP_KEY_ID,
     secretAccessKey: process.env.REACT_APP_ACCESS_KEY,
   },
-});
+});*/
 //Функция отправки sendJsonToS3 в s3 через s3Client//Function for sending sendJsonToS3 to s3 via s3Client
 const sendJsonToS3 = async data => {
   const jsonString = JSON.stringify(data);
@@ -44,7 +45,7 @@ const sendJsonToS3 = async data => {
   try {
     //Изменение содержания кнопки Отправить//Changing the content of the Submit button
     formBtn.textContent = 'Загрузка...';
-    const results = await s3Client.send(new PutObjectCommand(params));
+    //const results = await s3Client.send(new PutObjectCommand(params));
     //Вывод информации о созданном файле и пути в консоль
     //Output information about the created file and path to the console
     console.log(
@@ -56,7 +57,7 @@ const sendJsonToS3 = async data => {
     setTimeout(function () {
       localStorage.removeItem('exam-protocol-form');
     }, 3050);
-    return results;
+    //return results;
   } catch (err) {
     //Обработка ошибок при отправвке//Handling errors when sending
     console.log('Ошибка: ', err);
@@ -551,10 +552,6 @@ const ResultsFormComponent: React.FC<IExaminationResults> = () => {
                         {/*Кнопка удаления полей очага//Button for removing nodules fields*/}
                         <Button
                           onClick={() => remove(index)}
-                          variant="outlined"
-                          size="initial"
-                          color="black"
-                          border="secondary"
                           className="p-2"
                           startIcon={undefined}
                           endIcon={undefined}
@@ -578,8 +575,6 @@ const ResultsFormComponent: React.FC<IExaminationResults> = () => {
                       })
                     }
                     className="my-3 ml-4 flex justify-end"
-                    type="button"
-                    color="primary"
                     startIcon={undefined}
                     endIcon={undefined}
                     name={undefined}
@@ -777,12 +772,8 @@ const ResultsFormComponent: React.FC<IExaminationResults> = () => {
             {/*Кнопки управления протоколом//Protocol control buttons*/}
             <div className="flex justify-end">
               <Button
-                type="reset"
                 data-cy="reset-btn"
                 className="p-2"
-                variant="outlined"
-                size="initial"
-                border="secondary"
                 startIcon={undefined}
                 endIcon={undefined}
                 name={undefined}
@@ -792,13 +783,8 @@ const ResultsFormComponent: React.FC<IExaminationResults> = () => {
               </Button>
 
               <Button
-                type="close"
                 data-cy="cancel-btn"
                 className="ml-2 p-2"
-                color="black"
-                variant="outlined"
-                size="initial"
-                border="secondary"
                 onClick={handleCloseOnCloseBtn}
                 startIcon={undefined}
                 endIcon={undefined}
@@ -808,11 +794,8 @@ const ResultsFormComponent: React.FC<IExaminationResults> = () => {
               </Button>
 
               <Button
-                type="submit"
                 data-cy="submit-btn"
                 className="send-btn ml-2"
-                color="primary"
-                border="secondary"
                 disabled={undefined}
                 startIcon={undefined}
                 endIcon={undefined}
