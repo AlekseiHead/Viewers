@@ -5,7 +5,7 @@ module.exports = {
   // ...(process.env.NODE_ENV === 'development' && {
   //   safelist: [{ pattern: /.*/ }],
   // }),
-  content: ['./src/**/*.{jsx,js,ts,tsx,css,mdx}'],
+  content: ['./src/**/*.{jsx,js,ts,tsx,css,mdx}', 'node_modules/flowbite-react/lib/esm/**/*.js'],
   theme: {
     screens: {
       sm: '640px',
@@ -748,5 +748,5 @@ module.exports = {
     transitionDuration: ['responsive'],
   },
   corePlugins: {},
-  plugins: [],
+  plugins: [require('flowbite/plugin')],
 };
