@@ -7,10 +7,10 @@ import { DicomMetadataStore } from '@ohif/core';
 import { Formik, Field, FieldArray, Form } from 'formik';
 import { Persist } from 'formik-persist';
 import { Accordion } from 'flowbite-react';
+//import { useS3Upload } from 'extensions/cornerstone/src/utils/useS3Upload';
 //import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-//import S3Client = require('@aws-sdk/client-s3');
 
-//Подключение сервиса по правилам OHIF//Connecting the service according to OHIF rules
+//Подключение сервиса OHIF//Connecting the service  OHIF
 //import { MedicalExaminationService } from '@ohif/core';
 //Будет использовано для перевода i18next//Will be used to translate i18next
 //import { useTranslation } from 'react-i18next';
@@ -33,6 +33,7 @@ const sendJsonToS3 = async data => {
   //Получение StudyInstanceUID из Метаданных изображения//Getting StudyInstanceUID from Image Metadata
   const keyFileName = DicomMetadataStore.getStudyInstanceUIDs().at(-1) + '.json';
   const formBtn = document.querySelector('.send-btn');
+
   const params = {
     Bucket: 'cloud-packs-bucket', //Имя бакета//Bucket name
     Key: keyFileName, //Имя объекта//Object name
@@ -770,36 +771,39 @@ const ResultsFormComponent: React.FC<IExaminationResults> = () => {
             </div>
 
             {/*Кнопки управления протоколом//Protocol control buttons*/}
-            <div className="flex justify-end">
+            <div className="mt-4 flex justify-end">
               <Button
+                name={'reset'}
+                className="ml-2"
+                type={ButtonEnums.type.secondary}
                 data-cy="reset-btn"
-                className="p-2"
                 startIcon={undefined}
                 endIcon={undefined}
-                name={undefined}
                 onClick={resetForm}
               >
                 Очистить форму
               </Button>
 
               <Button
-                data-cy="cancel-btn"
-                className="ml-2 p-2"
+                name={'cancel'}
+                className="ml-2"
+                type={ButtonEnums.type.secondary}
                 onClick={handleCloseOnCloseBtn}
+                data-cy="cancel-btn"
                 startIcon={undefined}
                 endIcon={undefined}
-                name={undefined}
               >
                 {'Закрыть'}
               </Button>
 
               <Button
-                data-cy="submit-btn"
+                name={'submit'}
                 className="send-btn ml-2"
+                type={ButtonEnums.type.primary}
+                data-cy="submit-btn"
                 disabled={undefined}
                 startIcon={undefined}
                 endIcon={undefined}
-                name={undefined}
                 onClick={undefined}
               >
                 {'Отправить'}
